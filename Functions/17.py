@@ -22,6 +22,4 @@ def make_underline(fn):
 def hello():
     return "hello world"
 
-
-
 print(hello())

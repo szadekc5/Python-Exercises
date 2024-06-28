@@ -1,23 +1,17 @@
 import asyncio
-import time
-async def task1():
-    print("Task-1 started")
-    await asyncio.sleep(4)
-    print("Task-1 completed")
-async def task2():
-    print("Task-2 started")
-    await asyncio.sleep(1)
-    print("Task-2 completed")
-async def task3():
-    print("Task-3 started\n")
-    await asyncio.sleep(2)
-    print("Task-3 completed")
-
+import aiohttp
+async def fetch_url(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            return await response.text()
 async def main():
-    start_time = time.time()    
-    await asyncio.gather(task1(), task2(), task3())    
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print("\nAll tasks completed in {:.2f} seconds".format(elapsed_time))
+    url_1 = "https://www.wikipedia.org/"
+    url_2 = "https://www.google.com"    
+    task1 = asyncio.create_task(fetch_url(url_1))
+    task2 = asyncio.create_task(fetch_url(url_2))    
+    data1 = await task1
+    data2 = await task2    
+    print("Data from ",url_1, len(data1), "bytes")
+    print("Data from ",url_2, len(data2), "bytes")
 
 asyncio.run(main())
